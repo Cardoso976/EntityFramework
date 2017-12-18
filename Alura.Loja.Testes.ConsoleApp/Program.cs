@@ -31,8 +31,9 @@ namespace Alura.Loja.Testes.ConsoleApp
                 loggerFactory.AddProvider(SqlLoggerProvider.Create());
 
                 //contexto.Promocoes.Add(promocaoDePascoa);
-                var promocao = contexto.Promocoes.Find(3);
+                var promocao = contexto.Promocoes.Find(1);
                 contexto.Promocoes.Remove(promocao);
+                ExibeEntries(contexto.ChangeTracker.Entries());
                 contexto.SaveChanges();
             }
 

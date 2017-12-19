@@ -18,6 +18,31 @@ namespace Alura.Loja.Testes.ConsoleApp
                 var serviceProvider = contexto.GetInfrastructure<IServiceProvider>();
                 var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
                 loggerFactory.AddProvider(SqlLoggerProvider.Create());
+
+                var cliente = contexto
+                    .Clientes
+                    .Include(c => c.EnderecoDeEntrega)
+                    .First();
+
+                Console.WriteLine($"Endereço de entrega: {cliente.EnderecoDeEntrega.Logradouro}");
+
+                var produto = contexto
+                    .Produtos
+                    .Where(p => p.Id == 17)
+                    .FirstOrDefault();
+
+                contexto.Entry(produto)
+                    .Collection(p => p.Compras)
+                    .Query()
+                    .Where(c => c.Preco > 1)
+                    .Load();
+                    
+
+                Console.WriteLine($"Mostrando as compras do produto {produto.Nome}");
+                foreach (var item in produto.Compras)
+                {
+                    Console.WriteLine("\t" + item);
+                }
             }
 
         }
